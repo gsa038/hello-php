@@ -1,19 +1,34 @@
 <?php
 
-$writers_birthdays = array(
-    "Lermontov" => "1814-10-15",
-    "Pushkin" => "1799-06-06",
-    "Lev Tolstoy" => "1828-09-09"
-);
-
-echo "Enter your age\n";
-intval($user_age = readline());
-$user_min_birth_date = date_create(date("Y-m-d", mktime(0, 0, 0, date("m") , date("d"), date("Y") - $user_age)));
-
-foreach ($writers_birthdays as $writer => $date) {
-
-    $diff_date = date_diff(date_create($date), $user_min_birth_date);
-    echo "You're younger than $writer at least for $diff_date->y years\n";
+function enterUserAge() {
+    define("MESSAGE1",  "Enter your age:");
+    define("MESSAGE2",  "Enter your age as a number:");
+    $message = MESSAGE1;
+    while (true) {
+        echo "$message\n";
+        $userAgeString = readline();
+        if (is_numeric($userAgeString))
+            return (int) $userAgeString;
+        elseif ($message != MESSAGE2)
+            $message = MESSAGE2;
+    }
 }
+
+$userAge = enterUserAge();
+
+$writersBirthdayYears = [
+    "Lermontov" => "1814",
+    "Pushkin" => "1799",
+    "Lev Tolstoy" => "1828"
+];
+
+$userBirthDate = date("Y") - $userAge;
+foreach ($writersBirthdayYears as $writer => $date) {
+    $diffDate = $userBirthDate - $date;
+    echo "You're younger than $writer for $diffDate years\n";
+}
+
+
+
 
 

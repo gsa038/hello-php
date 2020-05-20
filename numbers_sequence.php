@@ -16,14 +16,14 @@ printArray($numSeq);
 echo "persents\n";
 printNumsPercentArray($numSeq);
 
-function printArray($array):void {
+function printArray(array $array):void {
     foreach ($array as $value) {
         echo "$value ";
     }
     echo "\n";
 }
 
-function printNumsPercentArray(&$array):void {
+function printNumsPercentArray(array &$array):void {
     $numSeqPercent = array_sum($array) / 100;
     foreach ($array as &$value) {
         $valuePercent = round($value / $numSeqPercent, 2);

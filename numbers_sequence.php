@@ -5,13 +5,13 @@ declare(strict_types=1);
 $numSeq = getNumsFromConsole();
 
 echo "reverse\n";
-$numSeqTemp = krsort($numSeq);
+krsort($numSeq);
 printArray($numSeq);
 echo "asc\n";
-$numSeqTemp = asort($numSeq);
+asort($numSeq);
 printArray($numSeq);
 echo "desc\n";
-$numSeqTemp = arsort($numSeq);
+arsort($numSeq);
 printArray($numSeq);
 echo "persents\n";
 printNumsPercentArray($numSeq);

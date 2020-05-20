@@ -24,20 +24,20 @@ function getNumsFromConsole(): array {
 $numSeq = getNumsFromConsole();
 
 echo "Choose an action:\n 
-    1 - Get ascending sorted sequence.\n 
-    2 - Get descending sorted sequence\n 
-    3 - Get reverse order sorted sequence\n";
+    1 - Get reverse order sorted sequence\n
+    2 - Get ascending sorted sequence.\n 
+    3 - Get descending sorted sequence\n";
 
 $userAction = readline();
 switch ($userAction) {
     case "1":
-        asort($numSeq);
+        krsort($numSeq);
         break;
     case "2":
-        arsort($numSeq);
+        asort($numSeq);
         break;
     case "3":
-        krsort($numSeq);
+        arsort($numSeq);
         break;
     default:
         echo "Wrong input!";

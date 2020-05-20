@@ -48,5 +48,8 @@ switch ($userAction) {
         exit();
 }
 
-foreach ($numSeq as $value)
-    echo "$value ";
+$numSeqPercent = array_sum($numSeq) / 100;
+foreach ($numSeq as $value) {
+    $valuePercent = round($value / $numSeqPercent, 2) ;
+    echo "$value - $valuePercent%\n";
+}

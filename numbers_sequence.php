@@ -53,3 +53,4 @@ foreach ($numSeq as $value) {
     $valuePercent = round($value / $numSeqPercent, 2) ;
     echo "$value - $valuePercent%\n";
 }
+

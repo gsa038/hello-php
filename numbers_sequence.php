@@ -13,8 +13,12 @@ function getNumsFromConsole(): array {
         }
         // first variant input float cheching is using
         // Second variant check ($f == (string)(float)$f)
-        if (is_float($value + 0)){ 
+        elseif (is_float($value + 0)){ 
             echo "One of sequence members is a float!\nAll must be integer";
+            exit();
+        } 
+        elseif ((!(int) $value > 0)) {
+            echo "All integer numbers must be greater than 0";
             exit();
         }
     }

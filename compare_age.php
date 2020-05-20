@@ -1,20 +1,16 @@
 <?php
 
-function enterUserAge() {
-    define("MESSAGE1",  "Enter your age:");
-    define("MESSAGE2",  "Enter your age as a number:");
-    $message = MESSAGE1;
-    while (true) {
-        echo "$message\n";
-        $userAgeString = readline();
-        if (is_numeric($userAgeString))
-            return (int) $userAgeString;
-        elseif ($message != MESSAGE2)
-            $message = MESSAGE2;
-    }
+function getUserAgeFromConsole() {
+    echo "Enter your age:\n";
+    $userAgeString = readline();
+    if (is_numeric($userAgeString))
+        return (int) $userAgeString;
+    else
+        echo "Error: your age must be a number!\n";
+        exit();
 }
 
-$userAge = enterUserAge();
+$userAge = getUserAgeFromConsole();
 
 $writersBirthdayYears = [
     "Lermontov" => "1814",

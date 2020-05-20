@@ -1,13 +1,15 @@
 <?php
 
-function getUserAgeFromConsole() {
+declare(strict_types=1);
+
+function getUserAgeFromConsole(): int {
     echo "Enter your age:\n";
     $userAgeString = readline();
-    if (is_numeric($userAgeString))
+    if (is_numeric($userAgeString)) {
         return (int) $userAgeString;
-    else
-        echo "Error: your age must be a number!\n";
-        exit();
+    }
+    echo "Error: your age must be a number!\n";
+    exit();
 }
 
 $userAge = getUserAgeFromConsole();

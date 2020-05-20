@@ -8,17 +8,17 @@ function getNumsFromConsole(): array {
     $numSeqArray = explode(",", $numSeqString);
     foreach ($numSeqArray as $value) {
         if (!is_numeric($value)){
-            echo "One of sequence members not a number.\nAll must be a number!\n";
+            fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
             exit();
         }
         // first variant input float cheching is using
         // Second variant check ($f == (string)(float)$f)
         elseif (is_float($value + 0)){ 
-            echo "One of sequence members is a float!\nAll must be integer";
+            fwrite(STDERR,"'$value' is a float!\nAll must be integer");
             exit();
         } 
         elseif ((!(int) $value > 0)) {
-            echo "All integer numbers must be greater than 0";
+            fwrite(STDERR,"'$value' is smaller than 1.\nAll integer numbers must be greater than 0");
             exit();
         }
     }

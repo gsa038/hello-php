@@ -7,8 +7,14 @@ function getNumsFromConsole(): array {
     $numSeqString = readline();
     $numSeqArray = explode(",", $numSeqString);
     foreach ($numSeqArray as $value) {
-        if (!ctype_digit($value)){
-            echo "Error: All parts of sequence must be an integer number!\n";
+        if (!is_numeric($value)){
+            echo "One of sequence members not a number.\nAll must be a number!\n";
+            exit();
+        }
+        // first variant input float cheching is using
+        // Second variant check ($f == (string)(float)$f)
+        if (is_float($value + 0)){ 
+            echo "One of sequence members is a float!\nAll must be integer";
             exit();
         }
     }

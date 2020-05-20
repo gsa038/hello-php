@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$numSeq = getNumsFromConsole();
+$numSeq = getNumbersFromConsole();
 
 echo "reverse\n";
 krsort($numSeq);
@@ -13,8 +13,11 @@ printArray($numSeq);
 echo "desc\n";
 arsort($numSeq);
 printArray($numSeq);
-echo "persents\n";
-printNumsPercentArray($numSeq);
+echo "percents\n";
+$numSeq = getNumbersPercentArray($numSeq);
+foreach ($numSeq as $key => $value) {
+    echo "$key - $value\n";
+}
 
 function printArray(array $array):void {
     foreach ($array as $value) {
@@ -23,12 +26,14 @@ function printArray(array $array):void {
     echo "\n";
 }
 
-function printNumsPercentArray(array &$array):void {
-    $numSeqPercent = array_sum($array) / 100;
-    foreach ($array as &$value) {
-        $valuePercent = round($value / $numSeqPercent, 2);
-        echo "$value - $valuePercent%\n";
+function getNumbersPercentArray(array $array):array {
+    $numbersSequencePercent = array_sum($array) / 100;
+    $numbersPercentArray = [];
+    foreach ($array as $value) {
+        $valuePercent = round($value / $numbersSequencePercent, 2);
+        $numbersPercentArray[$value] = "$valuePercent%";
     }
+    return $numbersPercentArray;
 }
 
 function getUserInput(string $text):string {
@@ -36,7 +41,7 @@ function getUserInput(string $text):string {
     return readline();
 }
 
-function getNumsFromConsole():array {
+function getNumbersFromConsole():array {
     $numSeqString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
     $numSeqArray = explode(",", $numSeqString);
     foreach ($numSeqArray as $value) {

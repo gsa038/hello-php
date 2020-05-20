@@ -48,5 +48,6 @@ switch ($userAction) {
         exit();
 }
 
-foreach ($numSeq as $value)
+foreach ($numSeq as $value) {
     echo "$value ";
+}

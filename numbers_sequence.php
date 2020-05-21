@@ -2,46 +2,75 @@
 
 declare(strict_types=1);
 
-$numSeq = getNumsFromConsole();
+$numbersSequence = getNumbersFromConsole();
 
-// $userAction = useMenuAction();
-$userAction = useArgsAction();
-
-switch ($userAction) {
-    case "1":
-        krsort($numSeq);
-        break;
-    case "2":
-        asort($numSeq);
-        break;
-    case "3":
-        arsort($numSeq);
-        break;
-    case "4":
-        getNumsPercent($numSeq);
-        break;
-    default:
-        echo "Wrong input!\nWill be Returned non-changed array\n";
+if ($argc > 1) {
+    for ($i = 1; $i < $argc; $i++) {
+        switch ($argv[$i]) {
+            case "-p":
+                echo "percents\n";
+                $array = getNumbersPercentArray($numbersSequence);
+                foreach ($array as $key => $value) {
+                    echo "$key - $value\n";
+                }
+                break;
+            case "--order=reverse":
+                echo "reverse\n";
+                $array = $numbersSequence;
+                krsort($array);
+                printArray($array);
+                break;
+            case "--order=asc":
+                echo "asc\n";
+                $array = $numbersSequence;
+                asort($array);
+                printArray($array);
+                break;
+            case "--order=desc":
+                echo "desc\n";
+                $array = $numbersSequence;
+                arsort($array);
+                printArray($array);
+                break;
+            default:
+                echo "Unknown argument\n";
+        }
+    }    
+} else {
+    printArray($numbersSequence);
 }
 
-foreach ($numSeq as $value) {
-    echo "$value\n";
+function printArray(array $array):void {
+    foreach ($array as $value) {
+        echo "$value ";
+    }
+    echo "\n";
 }
 
-function getUserInput(string $text): string {
+function getNumbersPercentArray(array $array):array {
+    $numbersSequencePercent = array_sum($array) / 100;
+    $numbersPercentArray = [];
+    foreach ($array as $value) {
+        $valuePercent = round($value / $numbersSequencePercent, 2);
+        $numbersPercentArray[$value] = "$valuePercent%";
+    }
+    return $numbersPercentArray;
+}
+
+function getUserInput(string $text):string {
     echo "$text\n";
     return readline();
 }
 
-function getNumsFromConsole(): array {
-    $numSeqString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
-    $numSeqArray = explode(",", $numSeqString);
-    foreach ($numSeqArray as $value) {
+function getNumbersFromConsole():array {
+    $numbersString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
+    $numbers = explode(",", $numbersString);
+    foreach ($numbers as $value) {
         if (!is_numeric($value)){
             fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
             exit();
         }
-        if ((string)(int)$value != $value) { 
+        if (is_float($value != (string)(int)$value)){ 
             fwrite(STDERR,"'$value' is a float!\nAll must be integer");
             exit();
         } 
@@ -49,45 +78,7 @@ function getNumsFromConsole(): array {
             fwrite(STDERR,"'$value' is smaller than 1.\nAll integer numbers must be greater than 0");
             exit();
         }
-        $value = (int) $value;
+        $value = (int)$value;
     }
-    return $numSeqArray;
-}
-
-function getNumsPercent(&$array): array {
-    $valueSeqPercent = array_sum($array) / 100;
-    foreach ($array as &$value) {
-        $valuePercent = round($value / $valueSeqPercent, 2);
-        $value = "$value - $valuePercent%\n";
-    }
-    unset($value);
-    return $array;
-}
-
-function useMenuAction(): string {
-    echo "Choose an action:\n 
-        1 - Get reverse order sorted sequence\n
-        2 - Get ascending sorted sequence.\n 
-        3 - Get descending sorted sequence\n
-        4 - Get percent of numbers of sequence\n";
-    return $userAction = readline();
-}
-
-function useArgsAction(): string {
-    if ($argv['-p']){
-        return '4';
-    }
-    if ($argv['--order']) {
-        switch ($argv['--order']) {
-            case 'reverse':
-                return '1';
-            case 'asc':
-                return '2';
-            case 'desc':
-                return '3';
-            default:
-                fwrite(STDERR, "Unknoun parameter of argumrent was used");
-        }
-    fwrite(STDERR, "Unknoun argumrent was used");
-    }
+    return $numbers;
 }

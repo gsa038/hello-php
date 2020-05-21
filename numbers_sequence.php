@@ -88,8 +88,8 @@ function getNumbersFromConsole():array {
         if ($value != (string)(int)$value){ 
             fwrite(STDERR,"'$value' is a float!\nAll must be integer");
             exit();
-        } 
-        if ((!(int) $value > 0)) {
+        }
+        if (!((int)$value > 0)) {
             fwrite(STDERR,"'$value' is smaller than 1.\nAll integer numbers must be greater than 0");
             exit();
         }

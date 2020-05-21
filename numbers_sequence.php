@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-$numSeq = getNumbersFromConsole();
+$numbersSequence = getNumbersFromConsole();
 
 echo "reverse\n";
-$numSeqTemp = $numSeq;
-krsort($numSeqTemp);
-printArray($numSeqTemp);
+$numbers = $numbersSequence;
+krsort($numbers);
+printArray($numbers);
 
 echo "asc\n";
-$numSeqTemp = $numSeq;
-asort($numSeqTemp);
-printArray($numSeqTemp);
+$numbers = $numbersSequence;
+asort($numbers);
+printArray($numbers);
 
 echo "desc\n";
-$numSeqTemp = $numSeq;
-arsort($numSeqTemp);
-printArray($numSeqTemp);
+$numbers = $numbersSequence;
+arsort($numbers);
+printArray($numbers);
 
 echo "percents\n";
-$numSeqTemp = getNumbersPercentArray($numSeq);
-foreach ($numSeqTemp as $key => $value) {
+$numbers = getNumbersPercentArray($numbersSequence);
+foreach ($numbers as $key => $value) {
     echo "$key - $value\n";
 }
 
@@ -48,14 +48,14 @@ function getUserInput(string $text):string {
 }
 
 function getNumbersFromConsole():array {
-    $numSeqString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
-    $numSeqArray = explode(",", $numSeqString);
-    foreach ($numSeqArray as $value) {
+    $numbersSequenceString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
+    $numbersSequenceArray = explode(",", $numbersSequenceString);
+    foreach ($numbersSequenceArray as $value) {
         if (!is_numeric($value)){
             fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
             exit();
         }
-        if (is_float($value != (string)(int)$value)){ 
+        if (is_float($value + 0)) { 
             fwrite(STDERR,"'$value' is a float!\nAll must be integer");
             exit();
         } 
@@ -65,5 +65,5 @@ function getNumbersFromConsole():array {
         }
         $value = (int)$value;
     }
-    return $numSeqArray;
+    return $numbersSequenceArray;
 }

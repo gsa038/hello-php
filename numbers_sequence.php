@@ -2,42 +2,62 @@
 
 declare(strict_types=1);
 
+// We can set 2 variables for (string)short and (array)long opts
+// but in this case I won't do it
+$options = getopt("p::", ["order::"]);
 $numbersSequence = getNumbersFromConsole();
 
-if ($argc > 1) {
-    for ($i = 1; $i < $argc; $i++) {
-        switch ($argv[$i]) {
-            case "-p":
+if (count($options) > 0) {
+    foreach ($options as $opt => $value) {
+        switch ($opt) {
+            case "p":
                 echo "percents\n";
                 $array = getNumbersPercentArray($numbersSequence);
                 foreach ($array as $key => $value) {
                     echo "$key - $value\n";
                 }
                 break;
-            case "--order=reverse":
-                echo "reverse\n";
-                $array = $numbersSequence;
-                krsort($array);
-                printArray($array);
-                break;
-            case "--order=asc":
-                echo "asc\n";
-                $array = $numbersSequence;
-                asort($array);
-                printArray($array);
-                break;
-            case "--order=desc":
-                echo "desc\n";
-                $array = $numbersSequence;
-                arsort($array);
-                printArray($array);
+            case "order":
+                if (is_array($value)) {
+                    foreach ($value as $param) {
+                        doOrderAndPrint($param, $numbersSequence);
+                    }
+                    break;
+                }
+                doOrderAndPrint($value, $numbersSequence);
                 break;
             default:
                 echo "Unknown argument\n";
         }
-    }    
+    }
 } else {
     printArray($numbersSequence);
+}
+
+function doOrderAndPrint(string $orderParam, array $array):void {
+    switch ($orderParam) {
+        case "reverse":
+            echo "reverse\n";
+            // $array = $numbersSequence;
+            krsort($array);
+            printArray($array);
+            break;
+        case "asc":
+            echo "asc\n";
+            // $array = $numbersSequence;
+            asort($array);
+            printArray($array);
+            break;
+        case "desc":
+            echo "desc\n";
+            // $array = $numbersSequence;
+            arsort($array);
+            printArray($array);
+            break;
+        default:
+            echo "Wrong '--order' parameter value\n";
+            break;
+    }
 }
 
 function printArray(array $array):void {

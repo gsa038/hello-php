@@ -5,17 +5,23 @@ declare(strict_types=1);
 $numSeq = getNumbersFromConsole();
 
 echo "reverse\n";
-krsort($numSeq);
-printArray($numSeq);
+$numSeqTemp = $numSeq;
+krsort($numSeqTemp);
+printArray($numSeqTemp);
+
 echo "asc\n";
-asort($numSeq);
-printArray($numSeq);
+$numSeqTemp = $numSeq;
+asort($numSeqTemp);
+printArray($numSeqTemp);
+
 echo "desc\n";
-arsort($numSeq);
-printArray($numSeq);
+$numSeqTemp = $numSeq;
+arsort($numSeqTemp);
+printArray($numSeqTemp);
+
 echo "percents\n";
-$numSeq = getNumbersPercentArray($numSeq);
-foreach ($numSeq as $key => $value) {
+$numSeqTemp = getNumbersPercentArray($numSeq);
+foreach ($numSeqTemp as $key => $value) {
     echo "$key - $value\n";
 }
 

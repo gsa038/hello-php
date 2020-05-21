@@ -1,26 +1,30 @@
 <?php
 
 declare(strict_types=1);
+
+$numSeq = getNumbersFromConsole();
+
 if ($argc > 1) {
-    $numSeq = getNumbersFromConsole();
+    for ($i = 0; $i < $argc; $i++) {
+        switch ($argv[$i]) {
+            case "-p":
+                printNumbersPercentsArray($numSeq);
+                break;
+            case "--order=reverse":
+                printKeyReverseSortedArray($numSeq);
+                break;
+            case "--order=asc":
+                printValueAscendingSortedArray($numSeq);
+                break;
+            case "--order=desc":
+                printValueDescendingSortedArray($numSeq);
+                break;
+        }
+    }    
+} else {
+    printArray($numSeq);
 }
 
-for ($i = 0; $i < $argc; $i++) {
-    switch ($argv[$i]) {
-        case "-p":
-            printNumbersPercentsArray($numSeq);
-            break;
-        case "--order=reverse":
-            printKeyReverseSortedArray($numSeq);
-            break;
-        case "--order=asc":
-            printValueAscendingSortedArray($numSeq);
-            break;
-        case "--order=desc":
-            printValueDescendingSortedArray($numSeq);
-            break;
-    }
-}
 
 function printKeyReverseSortedArray(array $array):void {
     echo "reverse\n";

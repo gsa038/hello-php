@@ -5,7 +5,7 @@ declare(strict_types=1);
 $numbersSequence = getNumbersFromConsole();
 
 if ($argc > 1) {
-    for ($i = 0; $i < $argc; $i++) {
+    for ($i = 1; $i < $argc; $i++) {
         switch ($argv[$i]) {
             case "-p":
                 printNumbersPercentsArray($numbersSequence);
@@ -19,6 +19,8 @@ if ($argc > 1) {
             case "--order=desc":
                 printValueDescendingSortedArray($numbersSequence);
                 break;
+            default:
+                echo "Unknown argument\n";
         }
     }    
 } else {

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require 'utils.php';
+
 if ($argc > 2) {
     echo "1 additional aggument expected";
     exit();
@@ -28,9 +30,4 @@ function isLeapYear(int $year):string {
         return "True";
     }
     return "False";
-}
-
-function getUserInput(string $text):string {
-    echo "$text:\n";
-    return readline();
 }

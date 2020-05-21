@@ -2,55 +2,68 @@
 
 declare(strict_types=1);
 
-function getNumsFromConsole(): array {
-    echo "Enter a sequence of numbers in format: 1,2,3..etc.:\n";
-    $numSeqString = readline();
-    $numSeqArray = explode(",", $numSeqString);
-    foreach ($numSeqArray as $value) {
+$numbersSequence = getNumbersFromConsole();
+
+echo "reverse\n";
+$numbers = $numbersSequence;
+krsort($numbers);
+printArray($numbers);
+
+echo "asc\n";
+$numbers = $numbersSequence;
+asort($numbers);
+printArray($numbers);
+
+echo "desc\n";
+$numbers = $numbersSequence;
+arsort($numbers);
+printArray($numbers);
+
+echo "percents\n";
+$numbers = getNumbersPercentArray($numbersSequence);
+foreach ($numbers as $key => $value) {
+    echo "$key - $value\n";
+}
+
+function printArray(array $array):void {
+    foreach ($array as $value) {
+        echo "$value ";
+    }
+    echo "\n";
+}
+
+function getNumbersPercentArray(array $array):array {
+    $numbersSequencePercent = array_sum($array) / 100;
+    $numbersPercentArray = [];
+    foreach ($array as $value) {
+        $valuePercent = round($value / $numbersSequencePercent, 2);
+        $numbersPercentArray[$value] = "$valuePercent%";
+    }
+    return $numbersPercentArray;
+}
+
+function getUserInput(string $text):string {
+    echo "$text\n";
+    return readline();
+}
+
+function getNumbersFromConsole():array {
+    $numbersSequenceString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
+    $numbersSequenceArray = explode(",", $numbersSequenceString);
+    foreach ($numbersSequenceArray as $value) {
         if (!is_numeric($value)){
-            echo "One of sequence members not a number.\nAll must be a number!\n";
+            fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
             exit();
         }
-        // first variant input float cheching is using
-        // Second variant check ($f == (string)(float)$f)
-        elseif (is_float($value + 0)){ 
-            echo "One of sequence members is a float!\nAll must be integer";
+        if (is_float($value + 0)) { 
+            fwrite(STDERR,"'$value' is a float!\nAll must be integer");
             exit();
         } 
-        elseif ((!(int) $value > 0)) {
-            echo "All integer numbers must be greater than 0";
+        if ((!(int) $value > 0)) {
+            fwrite(STDERR,"'$value' is smaller than 1.\nAll integer numbers must be greater than 0");
             exit();
         }
+        $value = (int)$value;
     }
-    return array_map('intval', $numSeqArray);
+    return $numbersSequenceArray;
 }
-
-$numSeq = getNumsFromConsole();
-
-echo "Choose an action:\n 
-    1 - Get reverse order sorted sequence\n
-    2 - Get ascending sorted sequence.\n 
-    3 - Get descending sorted sequence\n";
-
-$userAction = readline();
-switch ($userAction) {
-    case "1":
-        krsort($numSeq);
-        break;
-    case "2":
-        asort($numSeq);
-        break;
-    case "3":
-        arsort($numSeq);
-        break;
-    default:
-        echo "Wrong input!";
-        exit();
-}
-
-$numSeqPercent = array_sum($numSeq) / 100;
-foreach ($numSeq as $value) {
-    $valuePercent = round($value / $numSeqPercent, 2) ;
-    echo "$value - $valuePercent%\n";
-}
-

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-// We can set 2 variables for (string)short and (array)long opts
-// but in this case I won't do it
 $options = getopt("p::", ["order::"]);
 $numbersSequence = getNumbersFromConsole();
 
@@ -38,19 +36,16 @@ function doOrderAndPrint(string $orderParam, array $array):void {
     switch ($orderParam) {
         case "reverse":
             echo "reverse\n";
-            // $array = $numbersSequence;
             krsort($array);
             printArray($array);
             break;
         case "asc":
             echo "asc\n";
-            // $array = $numbersSequence;
             asort($array);
             printArray($array);
             break;
         case "desc":
             echo "desc\n";
-            // $array = $numbersSequence;
             arsort($array);
             printArray($array);
             break;
@@ -90,7 +85,7 @@ function getNumbersFromConsole():array {
             fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
             exit();
         }
-        if (is_float($value != (string)(int)$value)){ 
+        if ($value != (string)(int)$value){ 
             fwrite(STDERR,"'$value' is a float!\nAll must be integer");
             exit();
         } 

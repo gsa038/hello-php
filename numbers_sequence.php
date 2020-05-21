@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-$numSeq = getNumbersFromConsole();
+$numbersSequence = getNumbersFromConsole();
 
 if ($argc > 1) {
     for ($i = 0; $i < $argc; $i++) {
         switch ($argv[$i]) {
             case "-p":
-                printNumbersPercentsArray($numSeq);
+                printNumbersPercentsArray($numbersSequence);
                 break;
             case "--order=reverse":
-                printKeyReverseSortedArray($numSeq);
+                printKeyReverseSortedArray($numbersSequence);
                 break;
             case "--order=asc":
-                printValueAscendingSortedArray($numSeq);
+                printValueAscendingSortedArray($numbersSequence);
                 break;
             case "--order=desc":
-                printValueDescendingSortedArray($numSeq);
+                printValueDescendingSortedArray($numbersSequence);
                 break;
         }
     }    
 } else {
-    printArray($numSeq);
+    printArray($numbersSequence);
 }
 
 
@@ -46,8 +46,8 @@ function printValueDescendingSortedArray(array $array):void {
 
 function printNumbersPercentsArray(array $array):void {
     echo "percents\n";
-    $numSeqTemp = getNumbersPercentArray($array);
-    foreach ($numSeqTemp as $key => $value) {
+    $numbers = getNumbersPercentArray($array);
+    foreach ($numbers as $key => $value) {
         echo "$key - $value\n";
     }
 }
@@ -75,9 +75,9 @@ function getUserInput(string $text):string {
 }
 
 function getNumbersFromConsole():array {
-    $numSeqString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
-    $numSeqArray = explode(",", $numSeqString);
-    foreach ($numSeqArray as $value) {
+    $numbersString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
+    $numbers = explode(",", $numbersString);
+    foreach ($numbers as $value) {
         if (!is_numeric($value)){
             fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
             exit();
@@ -92,5 +92,5 @@ function getNumbersFromConsole():array {
         }
         $value = (int)$value;
     }
-    return $numSeqArray;
+    return $numbers;
 }

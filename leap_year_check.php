@@ -23,7 +23,7 @@ if (strlen($year) > 4 || !ctype_digit($year)) {
 }
 
 
-fwrite(STDOUT, printBool(isLeapYear((int)$year)));
+fwrite(STDOUT, printBool(isLeapYear((int)$year), $year));
 
 function isLeapYear(int $year): bool {
     $date = strtotime("$year-01-01");
@@ -31,4 +31,11 @@ function isLeapYear(int $year): bool {
         return true;
     }
     return false;
+}
+
+function printBool(bool $bool, string $year): string {
+    if ($bool == 1) {
+        return "The year $year is Leap";
+    }
+    return "The year $year isn't Leap";
 }

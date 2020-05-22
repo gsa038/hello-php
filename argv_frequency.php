@@ -11,12 +11,6 @@ foreach ($argv as $argValue) {
 
 arsort($counters);
 
-$echoCounter = 0;
-
-foreach ($counters as $argKey => $argKeyCount) {
-    if (!($echoCounter < 5)) {
-        break;
-    }
+foreach (array_slice($counters, 0, 5, true) as $argKey => $argKeyCount) {
     echo "$argKey - $argKeyCount\n";
-    $echoCounter++;
 }

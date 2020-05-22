@@ -27,14 +27,11 @@ fwrite(STDOUT, printIsLeap(isLeapYear((int)$year), $year));
 
 function isLeapYear(int $year): bool {
     $date = strtotime("$year-01-01");
-    if (date('L',$date)) {
-        return true;
-    }
-    return false;
+    return (bool)date('L',$date);
 }
 
-function printIsLeap(bool $bool, string $year): string {
-    if ($bool == 1) {
+function printIsLeap(bool $isLeap, string $year): string {
+    if ($isLeap) {
         return "The year $year is Leap";
     }
     return "The year $year isn't Leap";

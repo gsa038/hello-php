@@ -32,7 +32,8 @@ if (count($options) > 0) {
     printArray($numbersSequence);
 }
 
-function doOrderAndPrint(string $orderParam, array $array):void {
+function doOrderAndPrint(string $orderParam, array $array):void
+{
     switch ($orderParam) {
         case "reverse":
             echo "reverse\n";
@@ -55,14 +56,16 @@ function doOrderAndPrint(string $orderParam, array $array):void {
     }
 }
 
-function printArray(array $array):void {
+function printArray(array $array):void
+{
     foreach ($array as $value) {
         echo "$value ";
     }
     echo "\n";
 }
 
-function getNumbersPercentArray(array $array):array {
+function getNumbersPercentArray(array $array):array
+{
     $numbersSequencePercent = array_sum($array) / 100;
     $numbersPercentArray = [];
     foreach ($array as $value) {
@@ -72,12 +75,14 @@ function getNumbersPercentArray(array $array):array {
     return $numbersPercentArray;
 }
 
-function getUserInput(string $text):string {
+function getUserInput(string $text):string
+{
     echo "$text\n";
     return readline();
 }
 
-function getNumbersFromConsole():array {
+function getNumbersFromConsole():array
+{
     $numbersString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
     $numbers = explode(",", $numbersString);
     foreach ($numbers as $value) {

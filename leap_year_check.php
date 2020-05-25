@@ -22,7 +22,6 @@ if (strlen($year) > 4 || !ctype_digit($year)) {
     exit();
 }
 
-
 fwrite(STDOUT, printIsLeap(isLeapYear((int)$year), $year));
 
 function isLeapYear(int $year): bool

@@ -25,12 +25,14 @@ if (strlen($year) > 4 || !ctype_digit($year)) {
 
 fwrite(STDOUT, printIsLeap(isLeapYear((int)$year), $year));
 
-function isLeapYear(int $year): bool {
+function isLeapYear(int $year): bool
+{
     $date = strtotime("$year-01-01");
     return (bool)date('L',$date);
 }
 
-function printIsLeap(bool $isLeap, string $year): string {
+function printIsLeap(bool $isLeap, string $year): string
+{
     if ($isLeap) {
         return "The year $year is Leap";
     }

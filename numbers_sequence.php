@@ -3,6 +3,19 @@
 declare(strict_types=1);
 
 $options = getopt("p::", ["order::"]);
+
+const HELP_TEXT = <<<'EOD'
+                    Available options is:
+                    -p - print weight of numbers  as percents
+                    --order=<reverse|asc|desc> - sorting
+                    Each option must be used once!
+                    EOD;
+
+if (count($options) < ($argc - 1)) {
+    echo HELP_TEXT;
+    exit();
+}
+
 $numbersSequence = getNumbersFromConsole();
 
 if (count($options) > 0) {
@@ -25,7 +38,7 @@ if (count($options) > 0) {
                 doOrderAndPrint($value, $numbersSequence);
                 break;
             default:
-                echo "Unknown argument\n";
+
         }
     }
 } else {
@@ -51,17 +64,18 @@ function doOrderAndPrint(string $orderParam, array $array):void
             printArray($array);
             break;
         default:
-            echo "Wrong '--order' parameter value\n";
+            echo <<<'EOD'
+                Wrong '--order' parameter value
+                Available values <reverse|asc|desc>
+                EOD;
             break;
     }
 }
 
 function printArray(array $array):void
 {
-    foreach ($array as $value) {
-        echo "$value ";
-    }
-    echo "\n";
+    $textForPrint = implode(" ", $array);
+    echo "$textForPrint\n";
 }
 
 function getNumbersPercentArray(array $array):array

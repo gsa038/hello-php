@@ -11,6 +11,8 @@ foreach ($argv as $argValue) {
 
 arsort($counters);
 
-foreach (array_slice($counters, 0, 5, true) as $argKey => $argKeyCount) {
+$top5Argv = array_slice($counters, 0, 5, true);
+
+foreach ($top5Argv as $argKey => $argKeyCount) {
     echo "$argKey - $argKeyCount\n";
 }

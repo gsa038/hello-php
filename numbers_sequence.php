@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require 'utils.php';
+
 $options = getopt("p::", ["order::"]);
 
 const HELP_TEXT = <<<'EOD'
@@ -60,12 +62,6 @@ function getNumbersPercentArray(array $array):array
         $numbersPercentArray[$value] = "$valuePercent%";
     }
     return $numbersPercentArray;
-}
-
-function getUserInput(string $text):string
-{
-    echo "$text\n";
-    return readline();
 }
 
 function getNumbersFromConsole():array

@@ -68,22 +68,27 @@ function getNumbersFromConsole():array
 {
     $numbersString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
     $numbers = explode(",", $numbersString);
-    foreach ($numbers as $value) {
-        if (!is_numeric($value)){
-            fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
-            exit();
-        }
-        if ($value != (string)(int)$value){ 
-            fwrite(STDERR,"'$value' is a float!\nAll must be integer");
-            exit();
-        }
-        if (!((int)$value > 0)) {
-            fwrite(STDERR,"'$value' is smaller than 1.\nAll integer numbers must be greater than 0");
-            exit();
-        }
-        $value = (int)$value;
+    foreach ($numbers as $number) {
+        verifyNumber($number);
+        $number = (int)$number;
     }
     return $numbers;
+}
+
+function verifyNumber(string $number)
+{
+    if (!is_numeric($number)){
+        fwrite(STDERR, "'$number' is not a number.\nAll must be a number!\n");
+        exit();
+    }
+    if ($number != (string)(int)$number){ 
+        fwrite(STDERR,"'$number' is a float!\nAll must be integer");
+        exit();
+    }
+    if (!((int)$number > 0)) {
+        fwrite(STDERR,"'$number' is smaller than 1.\nAll integer numbers must be greater than 0");
+        exit();
+    }
 }
 
 function getOptionResultForNumbers(string $option, string $value, array $numbers): void

@@ -17,19 +17,38 @@ if ($argc == 2) {
     $year = $argv[1];
 }
 
-if (strlen($year) > 4 || !ctype_digit($year)) {
-    fwrite(STDERR, "Year must consist max 4 positive integer");
+$isValidYear = preg_match('/-?\d+/', $year);
+
+if (!$isValidYear) {
+    fwrite(STDERR, "Year must be an integer number");
     exit();
 }
 
-$isLeapYear = isLeapYear((int)$year);
+$isLeapYear = getIsLeapYearString((int)$year);
 $responceText = printIsLeap($isLeapYear, $year);
 fwrite(STDOUT, $responceText);
 
-function isLeapYear(int $year): bool
+function getIsLeapYearString(int $year): bool
 {
-    $date = strtotime("$year-01-01");
-    return (bool)date('L',$date);
+    // Annalistic leap years from 45 before A.D. uo to 12 after A.D.
+    $fixedLeapYears = [-42, -39, -36, -33, -30, -27, -24, -21, -18, -15, -12, -9, 8, 12];
+    if ($year >= -45 && $year <= 12) {
+        return in_array($year, $fixedLeapYears);
+    }
+    if ($year > 12) {
+        // Leap years after reform of Gregory XIII in 1582
+        if ($year > 1582) {
+            if ($year % 400 === 0) {
+                return true;
+            } elseif ($year % 100 === 0) {
+                return false;
+            }
+        }
+        if ($year % 4 === 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function printIsLeap(bool $isLeap, string $year): string

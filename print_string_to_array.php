@@ -6,9 +6,9 @@ require 'utils.php';
 
 $stringToConvert = getUserInput('Input string kind of "a=1;b=2; c=agfda; derp=; eee="');
 
-var_dump(stringToArray($stringToConvert));
+var_dump(getArrayFromString($stringToConvert));
 
-function stringToArray(string $stringToConvert): array
+function getArrayFromString(string $stringToConvert): array
 {
     $parts = explode(';', $stringToConvert);
     $parts = array_map('trim', $parts);

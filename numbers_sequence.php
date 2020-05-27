@@ -20,24 +20,7 @@ $numbersSequence = getNumbersFromConsole();
 
 if (count($options) > 0) {
     foreach ($options as $opt => $value) {
-        switch ($opt) {
-            case "p":
-                echo "percents\n";
-                $array = getNumbersPercentArray($numbersSequence);
-                foreach ($array as $key => $value) {
-                    echo "$key - $value\n";
-                }
-                break;
-            case "order":
-                if (is_array($value)) {
-                    foreach ($value as $param) {
-                        doOrderAndPrint($param, $numbersSequence);
-                    }
-                    break;
-                }
-                doOrderAndPrint($value, $numbersSequence);
-                break;
-        }
+        getOptionResultForSequence($opt, $numbersSequence);
     }
 } else {
     printArray($numbersSequence);
@@ -113,4 +96,26 @@ function getNumbersFromConsole():array
         $value = (int)$value;
     }
     return $numbers;
+}
+
+function getOptionResultForSequence(string $option, array $sequence): void
+{
+    switch ($option) {
+        case "p":
+            echo "percents\n";
+            $array = getNumbersPercentArray($sequence);
+            foreach ($array as $key => $value) {
+                echo "$key - $value\n";
+            }
+            break;
+        case "order":
+            if (is_array($value)) {
+                foreach ($value as $param) {
+                    doOrderAndPrint($param, $sequence);
+                }
+                break;
+            }
+            doOrderAndPrint($value, $sequence);
+            break;
+    }
 }

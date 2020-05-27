@@ -37,8 +37,6 @@ if (count($options) > 0) {
                 }
                 doOrderAndPrint($value, $numbersSequence);
                 break;
-            default:
-
         }
     }
 } else {

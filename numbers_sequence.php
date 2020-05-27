@@ -2,68 +2,118 @@
 
 declare(strict_types=1);
 
-$numbersSequence = getNumbersFromConsole();
+require 'utils.php';
 
-echo "reverse\n";
-$numbers = $numbersSequence;
-krsort($numbers);
-printArray($numbers);
+$options = getopt("p::", ["order::"]);
 
-echo "asc\n";
-$numbers = $numbersSequence;
-asort($numbers);
-printArray($numbers);
+const HELP_TEXT = <<<'EOD'
+                    Available options is:
+                    -p - print weight of numbers  as percents
+                    --order=<reverse|asc|desc> - sorting
+                    Each option must be used once!
+                    EOD;
 
-echo "desc\n";
-$numbers = $numbersSequence;
-arsort($numbers);
-printArray($numbers);
-
-echo "percents\n";
-$numbers = getNumbersPercentArray($numbersSequence);
-foreach ($numbers as $key => $value) {
-    echo "$key - $value\n";
+if (count($options) < ($argc - 1)) {
+    echo HELP_TEXT;
+    exit();
 }
 
-function printArray(array $array):void {
-    foreach ($array as $value) {
-        echo "$value ";
+$numbers = getNumbersFromConsole();
+processOptionsForNumbers($options, $numbers);
+
+function doOrderAndPrint(string $orderParam, array $numbers):void
+{
+    switch ($orderParam) {
+        case "reverse":
+            echo "reverse\n";
+            krsort($numbers);
+            printArray($numbers);
+            break;
+        case "asc":
+            echo "asc\n";
+            asort($numbers);
+            printArray($numbers);
+            break;
+        case "desc":
+            echo "desc\n";
+            arsort($numbers);
+            printArray($numbers);
+            break;
+        default:
+            echo <<<'EOD'
+                Wrong '--order' parameter value
+                Available values <reverse|asc|desc>
+                EOD;
+            break;
     }
-    echo "\n";
 }
 
-function getNumbersPercentArray(array $array):array {
-    $numbersSequencePercent = array_sum($array) / 100;
-    $numbersPercentArray = [];
+function printArray(array $array):void
+{
+    $textForPrint = implode(" ", $array);
+    echo "$textForPrint\n";
+}
+
+function getNumbersPercentArray(array $array):array
+{
+    $numbersPercent = array_sum($array) / 100;
     foreach ($array as $value) {
-        $valuePercent = round($value / $numbersSequencePercent, 2);
+        $valuePercent = round($value / $numbersPercent, 2);
         $numbersPercentArray[$value] = "$valuePercent%";
     }
     return $numbersPercentArray;
 }
 
-function getUserInput(string $text):string {
-    echo "$text\n";
-    return readline();
+function getNumbersFromConsole():array
+{
+    $numbersString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
+    $numbers = explode(",", $numbersString);
+    foreach ($numbers as $number) {
+        verifyNumber($number);
+        $number = (int)$number;
+    }
+    return $numbers;
 }
 
-function getNumbersFromConsole():array {
-    $numbersSequenceString = getUserInput("Enter a sequence of numbers in format: 1,2,3..etc.:");
-    $numbersSequenceArray = explode(",", $numbersSequenceString);
-    foreach ($numbersSequenceArray as $value) {
-        if (!is_numeric($value)){
-            fwrite(STDERR, "'$value' is not a number.\nAll must be a number!\n");
-            exit();
-        }
-        if (is_float($value + 0)) { 
-            fwrite(STDERR,"'$value' is a float!\nAll must be integer");
-            exit();
-        } 
-        if ((!(int) $value > 0)) {
-            fwrite(STDERR,"'$value' is smaller than 1.\nAll integer numbers must be greater than 0");
-            exit();
-        }
-        $value = (int)$value;
+function verifyNumber(string $number)
+{
+    if (!is_numeric($number)){
+        fwrite(STDERR, "'$number' is not a number.\nAll must be a number!\n");
+        exit();
     }
-    return $numbersSequenceArray;
+    if ($number != (string)(int)$number){ 
+        fwrite(STDERR,"'$number' is a float!\nAll must be integer");
+        exit();
+    }
+    if (!((int)$number > 0)) {
+        fwrite(STDERR,"'$number' is smaller than 1.\nAll integer numbers must be greater than 0");
+        exit();
+    }
+}
+
+function getOptionResultForNumbers(string $option, string $value, array $numbers): void
+{
+    switch ($option) {
+        case "p":
+            echo "percents\n";
+            $array = getNumbersPercentArray($numbers);
+            foreach ($array as $key => $value) {
+                echo "$key - $value\n";
+            }
+            break;
+        case "order":
+            doOrderAndPrint($value, $numbers);
+            break;
+    }
+}
+
+function processOptionsForNumbers(array $options, array $numbers)
+{
+    if (count($options) > 0) {
+        foreach ($options as $opt => $value) {
+            getOptionResultForNumbers($opt, (string)$value, $numbers);
+        }
+    } else {
+        printArray($numbers);
+    }
 }

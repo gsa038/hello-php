@@ -16,33 +16,26 @@ if (count($options) < ($argc - 1)) {
     exit();
 }
 
-$numbersSequence = getNumbersFromConsole();
+$numbers = getNumbersFromConsole();
+processOptionsForNumbers($options, $numbers);
 
-if (count($options) > 0) {
-    foreach ($options as $opt => $value) {
-        getOptionResultForSequence($opt, $numbersSequence);
-    }
-} else {
-    printArray($numbersSequence);
-}
-
-function doOrderAndPrint(string $orderParam, array $array):void
+function doOrderAndPrint(string $orderParam, array $numbers):void
 {
     switch ($orderParam) {
         case "reverse":
             echo "reverse\n";
-            krsort($array);
-            printArray($array);
+            krsort($numbers);
+            printArray($numbers);
             break;
         case "asc":
             echo "asc\n";
-            asort($array);
-            printArray($array);
+            asort($numbers);
+            printArray($numbers);
             break;
         case "desc":
             echo "desc\n";
-            arsort($array);
-            printArray($array);
+            arsort($numbers);
+            printArray($numbers);
             break;
         default:
             echo <<<'EOD'
@@ -61,10 +54,9 @@ function printArray(array $array):void
 
 function getNumbersPercentArray(array $array):array
 {
-    $numbersSequencePercent = array_sum($array) / 100;
-    $numbersPercentArray = [];
+    $numbersPercent = array_sum($array) / 100;
     foreach ($array as $value) {
-        $valuePercent = round($value / $numbersSequencePercent, 2);
+        $valuePercent = round($value / $numbersPercent, 2);
         $numbersPercentArray[$value] = "$valuePercent%";
     }
     return $numbersPercentArray;
@@ -98,24 +90,29 @@ function getNumbersFromConsole():array
     return $numbers;
 }
 
-function getOptionResultForSequence(string $option, array $sequence): void
+function getOptionResultForNumbers(string $option, string $value, array $numbers): void
 {
     switch ($option) {
         case "p":
             echo "percents\n";
-            $array = getNumbersPercentArray($sequence);
+            $array = getNumbersPercentArray($numbers);
             foreach ($array as $key => $value) {
                 echo "$key - $value\n";
             }
             break;
         case "order":
-            if (is_array($value)) {
-                foreach ($value as $param) {
-                    doOrderAndPrint($param, $sequence);
-                }
-                break;
-            }
-            doOrderAndPrint($value, $sequence);
+            doOrderAndPrint($value, $numbers);
             break;
+    }
+}
+
+function processOptionsForNumbers(array $options, array $numbers)
+{
+    if (count($options) > 0) {
+        foreach ($options as $opt => $value) {
+            getOptionResultForNumbers($opt, (string)$value, $numbers);
+        }
+    } else {
+        printArray($numbers);
     }
 }

@@ -49,7 +49,6 @@ function getInNewBase(int $base, string $number, bool $useHex): string
         $part = $reminder % $base;
         $reminder = intdiv($reminder, $base);
         if ($useHex && (int)$part > 10) {
-
             $part = $hexSymbols["$part"];
         } else {
             $part = "$part";

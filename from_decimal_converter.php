@@ -38,8 +38,6 @@ foreach($decimals as $number) {
     checkIsNumber($number);
 }
 
-$base =(int)$base;
-
 // For optimization
 $base > 10 ? $useHex = true : $useHex = false;
 
@@ -93,7 +91,7 @@ function processParameter(string $param, string $value): void
 function setBase($value): void
 {
     global $base;
-    $base = $value;
+    $base = (int)$value;
 }
 
 function setDecimals($value): void

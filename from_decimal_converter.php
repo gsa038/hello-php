@@ -4,34 +4,52 @@ declare(strict_types=1);
 
 require 'utils.php';
 
-$numbersSystem = getUserInput("Input numbers system as integer number in range 2-16");
+const HELP_TEXT = <<<'EOD'
+            Warning!
+             
+            Use:
+            --base parameter for set numbers system as integer number in range 2-16
+            --decimals parameter for set decimals array in format : "1,10,100,1000,10000"
+             
+            All parameters required!
+            
+            EOD;
 
-if (!ctype_digit($numbersSystem) || (2 > (int)$numbersSystem) || ((int)$numbersSystem > 16)) {
-    printError("You need to input integer number in range 2-16 as numbers system!");
+$options = getopt("", ["base::", "decimals::"]);
+
+$decimals = null;
+$base = null;
+
+foreach ($options as $param => $value) {
+    if (gettype($value) === 'array') {
+        printError(HELP_TEXT);
+        printError("Warning: $param option must be used once!");
+        exit();
+    }
+    processParameter($param, $value);
+}
+
+if ($decimals === null || $base === null) {
+    printError(HELP_TEXT);
     exit();
 }
 
-$decimalNumbersSequence = explode("," , getUserInput("Input a sequence of decimal numbers in format: 1,2,3,4,5..etc"));
-
-// check only.. For check result perfomance
-foreach($decimalNumbersSequence as $number) {
-    if (!ctype_digit($number)) {
-        printError("$number isn't a positive decimal integer number");
-        exit();
-    }
+// check only.. For check result perfomance 
+foreach($decimals as $number) {
+    checkIsNumber($number);
 }
 
-$numbersSystem =(int)$numbersSystem;
+$base =(int)$base;
 
 // For optimization
-$numbersSystem > 10 ? $useHex = true : $useHex = false;
+$base > 10 ? $useHex = true : $useHex = false;
 
 $newNumbersArray = [];
-foreach($decimalNumbersSequence as $number) {
-    $newNumbersArray[$number] = getInNewBase($numbersSystem, $number, $useHex);
+foreach($decimals as $number) {
+    $newNumbersArray[$number] = getInNewBase($base, $number, $useHex);
 }
 
-printInfo("Numbers system is $numbersSystem\n");
+printInfo("Numbers system is $base\n");
 foreach($newNumbersArray as $oldNumber => $newNumber) {
     printInfo("$oldNumber = $newNumber\n");
 }
@@ -57,5 +75,46 @@ function getInNewBase(int $base, string $number, bool $useHex): string
         if ($reminder === 0) {
             return $newNumberString;
         }
+    }
+}
+
+function processParameter(string $param, string $value): void
+{
+    switch ($param) {
+        case "base":
+            checkIsBase($value);
+            setBase($value);
+            break;
+        case "decimals":
+            setDecimals(explode(',', $value));
+            break;
+    }
+}
+
+function setBase($value): void
+{
+    global $base;
+    $base = $value;
+}
+
+function setDecimals($value): void
+{
+    global $decimals;
+    $decimals = $value;
+}
+
+function checkIsNumber(string $number): void
+{
+    if (!ctype_digit($number)) {
+        printError("$number isn't a positive decimal integer number");
+        exit();
+    }
+}
+
+function checkIsBase(string $base): void
+{
+    if (!ctype_digit($base) || (2 > (int)$base) || ((int)$base > 16)) {
+        printError("You need to input integer number in range 2-16 as numbers system!");
+        exit();
     }
 }

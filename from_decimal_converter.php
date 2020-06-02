@@ -15,7 +15,7 @@ const HELP_TEXT = <<<'EOD'
             
             EOD;
 
-$options = getopt("", ["base::", "decimals::"]);
+$options = getopt("h::", ["base::", "decimals::"]);
 
 $decimals = null;
 $base = null;

@@ -22,7 +22,6 @@ $base = null;
 
 foreach ($options as $param => $value) {
     if (gettype($value) === 'array') {
-        printError(HELP_TEXT);
         printError("Warning: $param option must be used once!");
         exit();
     }
@@ -106,7 +105,7 @@ function setDecimals($value): void
 function checkIsNumber(string $number): void
 {
     if (!ctype_digit($number)) {
-        printError("$number isn't a positive decimal integer number");
+        printError("Warning: decimals contains $number and it isn't a positive decimal integer number");
         exit();
     }
 }
@@ -114,7 +113,7 @@ function checkIsNumber(string $number): void
 function checkIsBase(string $base): void
 {
     if (!ctype_digit($base) || (2 > (int)$base) || ((int)$base > 16)) {
-        printError("You need to input integer number in range 2-16 as numbers system!");
+        printError("Warning: base param must be integer number in range 2-16 as numbers system!");
         exit();
     }
 }

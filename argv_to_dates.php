@@ -2,49 +2,29 @@
 
 declare(strict_types=1);
 
-require 'utils.php';
-require "leap_year_check.php";
-
 const REGEX_DATE = "/\d\d\.\d\d\.\d\d\d\d/";
 
+require 'utils.php';
+
 if ($argc > 1) {
-    foreach ($argv as $arg) {
-        if(isValidDate($arg)) {
-            $dates[$arg] = "OK";
-        }
-        $dates[$arg] = "NOT OK";
+    $argvDates = array_slice($argv, 1);
+    foreach ($argvDates as $date) {
+        printInfo(getIsValidDateString($date)."\n");
     }
 }
-
-printArray($dates);
 
 function isValidDate(string $date): bool
 {
     if (!preg_match(REGEX_DATE, $date)) {
-        printError("$date is not in format dd.mm.yyyy");
+        printError("$date is not in format dd.mm.yyyy\n");
         exit();
     }
     list($day, $month, $year) = explode('.', $date);
     if (isValidMonth((int)$month)) {
         return isValidDay((int)$day, (int)$month, (int)$year);
     }
-
-    // if ($month[0] === "0") {
-    //     $month = trimFirstZero($month);
-    // }
-    
-    // if ($day[0] === "0") {
-    //     $day = trimFirstZero($day);
-    // }
+    return false;
 }
-
-// function trimFirstZero(string $text): string
-// {
-//     if ($text[0] === "0") {
-//         $text = $text[1];
-//     }
-//     return $text;
-// }
 
 function isValidMonth(int $month): bool
 {
@@ -65,10 +45,18 @@ function isValidDay(int $day, int $month, int $year): bool
 function getMaxDayOfMonth(int $month, int $year): int
 {
     if ($month === 4) {
-        if (getIsLeapYear((int)$year)) {
+        if (getIsLeapYear($year)) {
             return 29;
         }
     }
     $monthLengths = [31,28,31,30,31,30,31,31,30,31,30,31];
-    return $monthLengths[$month];
+    return $monthLengths[$month - 1];
+}
+
+function getIsValidDateString(string $date): string
+{
+    if(isValidDate($date)) {
+        return "$date is OK";
+    }
+    return "$date is NOT OK";
 }

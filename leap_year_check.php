@@ -2,31 +2,35 @@
 
 declare(strict_types=1);
 
-require 'utils.php';
+require_once 'utils.php';
 
-if ($argc > 2) {
-    printError("1 additional aggument expected");
-    exit();
+if (basename($_SERVER['PHP_SELF']) === "leap_year_check.php") {
+    if ($argc > 2) {
+        printError("1 additional aggument expected");
+        exit();
+    }
+
+    if ($argc == 1) {
+        $year = getUserInput("Enter year as integer number");
+    }
+
+    if ($argc == 2) {
+        $year = $argv[1];
+    }
+
+    $isValidYear = preg_match('/-?\d+/', $year);
+
+    if (!$isValidYear) {
+        printError("Year must be an integer number");
+        exit();
+    }
+
+    $isLeapYear = getIsLeapYear((int)$year);
+    $responceText = getIsLeapString($isLeapYear, $year);
+    printInfo($responceText);
 }
 
-if ($argc == 1) {
-    $year = getUserInput("Enter year as integer number");
-}
 
-if ($argc == 2) {
-    $year = $argv[1];
-}
-
-$isValidYear = preg_match('/-?\d+/', $year);
-
-if (!$isValidYear) {
-    printError("Year must be an integer number");
-    exit();
-}
-
-$isLeapYear = getIsLeapYear((int)$year);
-$responceText = getIsLeapString($isLeapYear, $year);
-printInfo($responceText);
 
 function getIsLeapYear(int $year): bool
 {
@@ -50,6 +54,7 @@ function getIsLeapYear(int $year): bool
     if ($year % 4 === 0) {
         return true;
     }
+    return false;
 }
 
 function getIsLeapString(bool $isLeap, string $year): string

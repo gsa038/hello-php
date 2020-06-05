@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 const REGEX_DATE = "/\d\d\.\d\d\.\d\d\d\d/";
 
-require 'utils.php';
+require_once 'utils.php';
+require_once 'leap_year_check.php';
 
-if ($argc > 1) {
-    $argvDates = array_slice($argv, 1);
-    foreach ($argvDates as $date) {
-        printInfo(getIsValidDateString($date)."\n");
+if (basename($_SERVER['PHP_SELF']) === "argv_to_dates.php") {
+    if ($argc > 1) {
+        $argvDates = array_slice($argv, 1);
+        foreach ($argvDates as $date) {
+            printInfo(getIsValidDateString($date)."\n");
+        }
     }
 }
 
@@ -44,7 +47,7 @@ function isValidDay(int $day, int $month, int $year): bool
 
 function getMaxDayOfMonth(int $month, int $year): int
 {
-    if ($month === 4) {
+    if ($month === 2) {
         if (getIsLeapYear($year)) {
             return 29;
         }

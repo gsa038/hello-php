@@ -6,8 +6,7 @@ require 'utils.php';
 
 const REGEX_PATTERN = "/[^=]+=[^=]*$/";
 
-// $stringToConvert = getUserInput('Input string in format: a=1;b=2; c=agfda; derp=; eee=');
-$stringToConvert = "a=1;b=2; c=agfda; derp=; eee=;";
+$stringToConvert = getUserInput('Input string in format: a=1;b=2; c=agfda; derp=; eee=');
 $stringToConvert = doTrimEndSemiColon($stringToConvert);
 
 var_dump(getArrayOfPairsFromString($stringToConvert));

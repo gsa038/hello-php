@@ -50,6 +50,7 @@ function getIsLeapYear(int $year): bool
     if ($year % 4 === 0) {
         return true;
     }
+    return false;
 }
 
 function getIsLeapString(bool $isLeap, string $year): string

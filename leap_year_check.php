@@ -30,8 +30,6 @@ if (basename($_SERVER['PHP_SELF']) === "leap_year_check.php") {
     printInfo($responceText);
 }
 
-
-
 function getIsLeapYear(int $year): bool
 {
     // Annalistic leap years from 45 before A.D. uo to 12 after A.D.

@@ -5,7 +5,6 @@ declare(strict_types=1);
 const REGEX_DATE = "/\d\d\.\d\d\.\d\d\d\d/";
 
 require_once 'utils.php';
-require_once 'leap_year_check.php';
 
 if (basename($_SERVER['PHP_SELF']) === "argv_to_dates.php") {
     if ($argc > 1) {
@@ -23,37 +22,7 @@ function isValidDate(string $date): bool
         exit();
     }
     list($day, $month, $year) = explode('.', $date);
-    if (isValidMonth((int)$month)) {
-        return isValidDay((int)$day, (int)$month, (int)$year);
-    }
-    return false;
-}
-
-function isValidMonth(int $month): bool
-{
-    if (($month !== 0) && ($month <= 12)) {
-        return true;
-    }
-    return false;
-}
-
-function isValidDay(int $day, int $month, int $year): bool
-{
-    if (($day !== 0) && ($day <= getMaxDayOfMonth($month, $year))) {
-        return true;
-    }
-    return false;
-}
-
-function getMaxDayOfMonth(int $month, int $year): int
-{
-    if ($month === 2) {
-        if (getIsLeapYear($year)) {
-            return 29;
-        }
-    }
-    $monthLengths = [31,28,31,30,31,30,31,31,30,31,30,31];
-    return $monthLengths[$month - 1];
+    return checkdate((int)$month, (int)$day, (int)$year);
 }
 
 function getIsValidDateString(string $date): string

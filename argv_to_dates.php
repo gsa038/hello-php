@@ -6,14 +6,14 @@ const REGEX_DATE = "/\d\d\.\d\d\.\d\d\d\d/";
 
 require_once 'utils.php';
 
-if (basename($_SERVER['PHP_SELF']) === "argv_to_dates.php") {
-    if ($argc > 1) {
-        $argvDates = array_slice($argv, 1);
-        foreach ($argvDates as $date) {
-            printInfo(getIsValidDateString($date)."\n");
-        }
+if ($argc > 1) {
+    foreach ($array_slice($argv, 1) as $date) {
+        printInfo(getIsValidDateString($date)."\n");
     }
+    exit();
 }
+
+printError("You need to enter dates in arguments");
 
 function isValidDate(string $date): bool
 {

@@ -7,8 +7,10 @@ const REGEX_DATE = "/\d\d\.\d\d\.\d\d\d\d/";
 require_once 'utils.php';
 
 if ($argc > 1) {
-    foreach ($array_slice($argv, 1) as $date) {
-        printInfo(getIsValidDateString($date)."\n");
+    $dates = array_slice($argv, 1);
+    foreach ($dates as $date) {
+        $isValidDateString = getIsValidDateString($date);
+        printInfo($isValidDateString."\n");
     }
     exit();
 }

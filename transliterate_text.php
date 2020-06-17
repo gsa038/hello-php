@@ -20,7 +20,8 @@ function transliterateString(string $text): string
     return transliterator_transliterate('Russian-Latin/BGN', $text);
 }
 
-function isCyrillicText(string $text): bool {
+function isCyrillicText(string $text): bool
+{
     for ($i = 0; $i < strlen($text); $i++) {
         if (!preg_match("/[А-Яа-яЁё]/", $text[$i])) {
             return false;

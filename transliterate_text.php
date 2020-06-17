@@ -11,15 +11,6 @@ if (!isCyrillicText($text)) {
     exit();
 }
 
-function isCyrillicText(string $text): bool {
-    for ($i = 0; $i < strlen($text); $i++) {
-        if (!preg_match("/[А-Яа-яЁё]/", $text[$i])) {
-            return false;
-        }
-    }
-    return true;
-}
-
 $transliteratedText = transliterateString($text);
 
 printInfo($transliteratedText."\n");
@@ -27,4 +18,13 @@ printInfo($transliteratedText."\n");
 function transliterateString(string $text): string
 {
     return transliterator_transliterate('Russian-Latin/BGN', $text);
+}
+
+function isCyrillicText(string $text): bool {
+    for ($i = 0; $i < strlen($text); $i++) {
+        if (!preg_match("/[А-Яа-яЁё]/", $text[$i])) {
+            return false;
+        }
+    }
+    return true;
 }

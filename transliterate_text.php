@@ -17,13 +17,14 @@ printInfo($transliteratedText."\n");
 
 function transliterateString(string $text): string
 {
-    return transliterator_transliterate('Russian-Latin/BGN', $text);
+    return transliterator_transliterate('Any-Latin; Latin-ASCII', $text);
 }
 
 function isCyrillicText(string $text): bool
 {
-    for ($i = 0; $i < strlen($text); $i++) {
-        if (!preg_match("/[А-Яа-яЁё]/", $text[$i])) {
+    $symbols = str_split($text, 2);
+    foreach ($symbols as $symbol) {
+        if (!preg_match("/[А-Яа-яЁё]/", $symbol)) {
             return false;
         }
     }

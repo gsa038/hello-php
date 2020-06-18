@@ -6,21 +6,21 @@ require_once 'utils.php';
 
 $text = getUserInput("Enter text for transliteration");
 
-if (!isCyrillicText($text)) {
+if (!isCyrillicString($text)) {
     printError("The sting must contain only cyrillic symbols!\n");
     exit();
 }
 
-$transliteratedText = transliterateString($text);
+$transliteratedText = getTransliteratedString($text);
 
 printInfo($transliteratedText."\n");
 
-function transliterateString(string $text): string
+function getTransliteratedString(string $text): string
 {
     return transliterator_transliterate('Any-Latin; Latin-ASCII', $text);
 }
 
-function isCyrillicText(string $text): bool
+function isCyrillicString(string $text): bool
 {
     $symbols = str_split($text, 2);
     foreach ($symbols as $symbol) {

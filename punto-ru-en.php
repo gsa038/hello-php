@@ -18,30 +18,106 @@ const LAYOUT_MAP_RU_EN = [
 
 $text = getUserInput("Enter text for inversion");
 
-$inversedLayoutText = getInversedLayoutString($text);
+$resultText = getInversedLayoutText($text);
 
-printInfo($inversedLayoutText."\n");
+printInfo($resultText."\n");
 
-function getInversedLayoutString(string $text): string
+function getInversedLayoutText(string $text): string
+{
+    $result = [];
+    $words = explode(' ', $text);
+    foreach ($words as $word) {
+        $newWord = getProcessedWord($word);
+        array_push($result, $newWord);
+    }
+    return implode(' ', $result);
+}
+
+function getProcessedWord(string $text): string
 {
     $result = "";
-    $stringArray = preg_split('/(?=[\s\S])/ius', $text, -1, PREG_SPLIT_NO_EMPTY);
-    foreach ($stringArray as $character) {
-        $result .= getProcessedCharacter($character);
+    $characters = preg_split('/(?=[\s\S])/ius', $text, -1, PREG_SPLIT_NO_EMPTY);
+    $layout = getTargetWordLayout($characters);
+    if ($layout === 'unknown') {
+        $result .= implode('', $characters);
+        return $result;
+    }
+    foreach ($characters as $character) {
+        $result .= getProcessedCharacter($character, $layout);
     }
     return $result;
 }
 
-function getProcessedCharacter(string $character): string
+function getTargetWordLayout($word): string
+{
+    $cyrillicLayout = array_keys(LAYOUT_MAP_RU_EN);
+    $qwertyLayout = array_values(LAYOUT_MAP_RU_EN);
+    $cyrillicWeight = 0;
+    $qwertyWeight = 0;
+    $wasFirstLayout = 'unknown';
+    foreach ($word as $i => $character) {
+        if (isCyrillicCharacter($character)) {
+            if ($i === 0) {
+                $wasFirstLayout = 'cyrillic';
+            }
+            $cyrillicWeight += 1;
+        }
+        if (isQwertyCharacter($character)) {
+            if ($i === 0) {
+                $wasFirstLayout = 'qwerty';
+            }
+            $qwertyWeight += 1;
+        }
+    }
+    if ($cyrillicWeight > $qwertyWeight) {
+        if ($qwertyWeight === 0) {
+            return 'qwerty';
+        }
+        return 'cyrillic';
+    }
+    if ($cyrillicWeight < $qwertyWeight) {
+        if ($cyrillicWeight === 0) {
+            return 'cyrillic';
+        }
+        return 'qwerty';
+    }
+    return $wasFirstLayout;
+}
+
+function isCyrillicCharacter(string $character): bool
+{
+    $cyrillicLayout = array_keys(LAYOUT_MAP_RU_EN);
+    if (in_array($character, $cyrillicLayout)) {
+        return true;
+    }
+    return false;
+}
+
+function isQwertyCharacter(string $character): bool
+{
+    $qwertyLayout = array_values(LAYOUT_MAP_RU_EN);
+    if (in_array($character, $qwertyLayout)) {
+        return true;
+    }
+    return false;
+}
+
+function getProcessedCharacter(string $character, string $layout): string
 {
     $cyrillicLayout = array_keys(LAYOUT_MAP_RU_EN);
     $qwertyLayout = array_values(LAYOUT_MAP_RU_EN);
     
-    if (in_array($character, $cyrillicLayout)) {
-        return LAYOUT_MAP_RU_EN[$character];
+    switch ($layout) {
+        case 'qwerty':
+            if (isCyrillicCharacter($character))
+                return LAYOUT_MAP_RU_EN[$character];
+            return $character;
+        case 'cyrillic':
+            if (isQwertyCharacter($character))
+                return array_search($character, LAYOUT_MAP_RU_EN);
+            return $character;
+        default:
+            return $character;    
     }
-    if (in_array($character, $qwertyLayout)) {
-        return array_search($character, LAYOUT_MAP_RU_EN);
-    }
-    return $character;
+    
 }

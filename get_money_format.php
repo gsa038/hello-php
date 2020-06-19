@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require 'utils.php';
 
-$floatString = getUserInput('Введите сумму в виде десятичного числа с плавающей точкой:');
+$floatString = getUserInput('Введите сумму в виде десятичного числа с плавающей точкой');
 
 if (!preg_match("/^\d*\.?\d?\d$/", $floatString)) {
     printError("$floatString имеет формат отличный от \"12345678.90\" ");
@@ -50,11 +50,21 @@ function getDigitString(string $text): string
 function getNumbersDigitStringParts(string $text): array
 {
     $resultParts = [];
-    $currentStartPosition = -1;
-    while (abs($currentStartPosition <= strlen($text))) {
-        $currentPart = substr($text, $currentStartPosition, -3);
-        array_push($resultParts, $currentPart);
-        $currentStartPosition -= 3;
+    $currentStartPosition = -3;
+    $step = 3;
+    while (true) {
+        $currentPart = substr($text, $currentStartPosition, $step);
+        array_unshift($resultParts, $currentPart);
+        if (abs($currentStartPosition) === strlen($text)) {
+            break;
+        }
+        if (count($resultParts) * 3 + 3 < strlen($text)) {
+            $currentStartPosition -= 3; 
+        }
+        else {
+            $currentStartPosition = -strlen($text);
+            $step = strlen($text) % 3;
+        }
     }
     return $resultParts;
 }

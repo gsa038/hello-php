@@ -16,7 +16,6 @@ print($moneyString);
 
 function getMoneyString($floatString): string
 {
-    setlocale(LC_ALL, 'ru_RU');
     list($rub, $coins) = explode('.', $floatString);
     $rublesPluralFormString = getRussianPluralFormString('рубл', 'ь', 'я', 'ей', (int) $rub);
     $coinsStringPart = '';
@@ -58,7 +57,7 @@ function getNumbersDigitStringParts(string $text): array
         if (abs($currentStartPosition) === strlen($text)) {
             break;
         }
-        if (count($resultParts) * 3 + 3 < strlen($text)) {
+        if (count($resultParts) * 3 + 3 <= strlen($text)) {
             $currentStartPosition -= 3; 
         }
         else {

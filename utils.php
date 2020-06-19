@@ -20,6 +20,9 @@ function printError(string $text): void
 
 function getRussianPluralFormString(string $base, string $end1, string $end2, string $end3, int $count): string
 {
+    if ($count > 20) {
+        $count = $count % 10;
+    }
     if ($count === 1) {
         return $base.$end1;
     }

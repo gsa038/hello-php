@@ -1,0 +1,7 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "nyholm/psr7": "*",
+        "nyholm/psr7-server": "*"
+    }
+}

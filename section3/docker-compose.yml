@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+
+  web:
+    image: nginx:latest
+    ports:
+        - "8080:80"
+    volumes:
+        - ./www:/var/www
+        - ./site.conf:/etc/nginx/conf.d/site.conf
+        - ./log:/var/log/nginx
+    depends_on: 
+        - php
+  php:
+    image: php:7-fpm
+    volumes:
+        - ./www:/var/www
+    depends_on:
+      - composer
+
+  composer:
+    image: composer:latest
+    command: ["composer", "install"]
+    volumes:
+      - ./www:/app

@@ -9,8 +9,7 @@ final class HomeAction
 {
     public function __invoke(
         ServerRequestInterface $request, 
-        ResponseInterface $response,
-        $args
+        ResponseInterface $response
     ): ResponseInterface {
         if ($request->getAttribute('yourName')) {
             $name = $request->getAttribute('yourName');

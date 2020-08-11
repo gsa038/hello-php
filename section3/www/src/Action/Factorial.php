@@ -11,14 +11,13 @@ class Factorial
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
-        if ($request->getAttribute('number')) {
+        if (is_numeric($request->getAttribute('number'))) {
             $number = $request->getAttribute('number');
             $factorial = $this->calcFactorial($number);
             $response->getBody()->write((string) $factorial);
+            return $response;
         }
-        else {
-            $response->getBody()->write('Bad request');
-        }
+        $response->getBody()->write('Bad request');
         return $response;
     }
     

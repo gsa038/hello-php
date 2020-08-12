@@ -13,7 +13,7 @@ class Fibonacci
     ): ResponseInterface {
         if (is_numeric($request->getAttribute('number'))) {
             $number = $request->getAttribute('number');
-            list($fibonacci, $counter) = $this->calcFibonacci($number);
+            $fibonacci = $this->calcFibonacci($number);
             $response->getBody()->write("$number $fibonacci");
             return $response;
         }

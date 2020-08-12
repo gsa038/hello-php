@@ -11,11 +11,13 @@ class Fibonacci
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
-        if (is_numeric($request->getAttribute('number'))) {
-            $number = $request->getAttribute('number');
-            $fibonacci = $this->calcFibonacci($number);
-            $response->getBody()->write("$number $fibonacci");
-            return $response;
+        $number = $request->getAttribute('number');
+        if (is_numeric($number)) {
+            if ($number >= 0) {
+                $fibonacci = $this->calcFibonacci($number);
+                $response->getBody()->write("$number $fibonacci");
+                return $response;
+            }            
         }
         $response->getBody()->write('Bad request');
         return $response;

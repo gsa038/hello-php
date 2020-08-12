@@ -5,13 +5,17 @@ services:
   web:
     image: nginx:latest
     ports:
-        - "8080:80"
+        - "80:80"
     volumes:
         - ./www:/var/www
         - ./config/site.conf:/etc/nginx/conf.d/site.conf
         - ./log:/var/log/nginx
     depends_on: 
         - php
+    networks:
+      back:
+        ipv4_address: 172.18.238.2
+      default:
   php:
     build: ./config/docker/php
     environment: 
@@ -21,9 +25,26 @@ services:
         - ./config/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     depends_on:
       - composer
+    networks:
+      back:
+        ipv4_address: 172.18.238.3
 
   composer:
     image: composer:latest
     command: ["composer", "install"]
     volumes:
       - ./www:/app
+    networks:
+      back:
+        ipv4_address: 172.18.238.4
+
+networks:
+    back:
+      driver: bridge
+      internal: true
+      ipam:
+       driver: default
+       config:
+         - subnet: 172.18.238.0/24
+    default:
+      driver: bridge

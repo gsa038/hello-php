@@ -41,7 +41,6 @@ services:
 networks:
     back:
       driver: bridge
-      internal: true
       ipam:
        driver: default
        config:

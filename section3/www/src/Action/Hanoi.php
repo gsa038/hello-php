@@ -7,21 +7,19 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Hanoi
 {
-    public string $hanoi;
+    public string $_hanoi = '';
     public function __invoke(
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
-        global $hanoi;
         $number = $request->getAttribute('number');
         if (is_numeric($number)) {
             if ($number > 0) {
-                $A = range($number, 1);
-                $B = [];
-                $C = [];
-                $hanoi = '';
-                $this->getHanoi($hanoi, $number, $A, $B, $C);
-                $response->getBody()->write($hanoi);
+                $A = new Rod('A', range($number, 1));
+                $B = new Rod('B', []);
+                $C = new Rod('C', []);
+                $this->getHanoi($number, $A, $B, $C);
+                $response->getBody()->write($this->_hanoi);
                 return $response;
             }            
         }
@@ -29,15 +27,26 @@ class Hanoi
         return $response;
     }
     
-    private function getHanoi(string $hanoi = null, int $number, array $from = [], array $buf = [], array $to = []): void
+    private function getHanoi(int $number, Rod $from, Rod $buf, Rod $to): void
     {
         if ($number > 0) {
-            $this->getHanoi($hanoi, $number - 1, $from, $buf, $to );
+            $this->getHanoi($number - 1, $from, $buf, $to );
             array_push($to, array_pop($from));
-            $source = implode('-', $from);
-            $destination = implode('-', $to);
-            $hanoi = $hanoi . "disc $number from [$source] to [$destination]\n";
-            $this->getHanoi($hanoi, $number - 1, $buf, $to, $from);
+            $fromRodName = $from->_name;
+            $toRodName = $to->_name;
+            $this->_hanoi = $this->_hanoi . "disc $number from $fromRodName to $toRodName<br>";
+            $this->getHanoi($number - 1, $buf, $to, $from);
         }
+    }
+}
+
+class Rod
+{
+    public string $_name;
+    public array $_data;
+    public function __construct(string $name = null, array $data = null)
+    {
+        $this->_name = $name;
+        $this->_data = $data;
     }
 }

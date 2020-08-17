@@ -4,47 +4,61 @@ namespace App\Action;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SebastianBergmann\CodeCoverage\Report\Xml\Node as XmlNode;
 
 class GetXMLTreeFromFile
 {
+    public array $fileParts;
+    public array $result
     public function __invoke(
         ServerRequestInterface $request, 
         ResponseInterface $response
     ): ResponseInterface {
         $filename = $request->getAttribute('filename');
-        if (isValidXMLFile($filename)) {
-            $xmlTree = getXMLTree();
-            $response->getBody()->write($this->$xmlTree);
-            return $response;
+        if (file_exists($filename)) {
+            if ($this->isValidFileForXML($filename)) {
+                $xml = $this->getXMLfromParts($this->fileParts);
+                $response->getBody()->write($this->$xml);
+                return $response;
+            }
         }
         return $response;
     }
     
-    private function getXMLTree(string $filename): stirng
+    private function getXMLfromParts(array $fileParts): string
     {
-        $text = file_get_contents($filename);
-        if ($number > 0) {
-            $this->getHanoi($number - 1, $from, $buf, $to );
-            array_push($to, array_pop($from));
-            $fromRodName = $from->_name;
-            $toRodName = $to->_name;
-            $this->_hanoi = $this->_hanoi . "disc $number from $fromRodName to $toRodName<br>";
-            $this->getHanoi($number - 1, $buf, $to, $from);
-        }
+        $tree = $this->buildPartsForArray($fileParts);
+        $result = buildXML($tree);
+        return $result;
     }
-
-    private function getXmlPartsFromString(string $text) : array
+    
+    private function buildPartsForArray(array $parts) : array
     {
-        $result = explode(';', $text);
+        $result = [];
+        foreach($parts as $i=>$part) {
+            $result[$i] = $this->buildArrayFromPart($part);
+        }
         return $result;
     }
 
-    private function isValidXMLFile(string $filename) : bool
+    private function buildArrayFromPart(string $text) : array
     {
-        if (file_exists($filename)) {
-            $text = file_get_contents($filename);
-            return preg_match('/(((\w.?)+=\d+;)|((\w.?)+=\d+\Z))+/', $text);
+        list($data, $levelsString) = explode(';', $text);
+        $levels = explode('.', $levelsString);
+        $levelsTree = [];
+        
         }
-        return false;
+        
+        foreach ($levels as $level) {
+            $levelsTree = ();
+        }
+
+        return $result;
+    }
+
+    private function isValidFileForXML(string $filename) : bool
+    {
+        $text = file_get_contents($filename);
+        return preg_match('/(((\w.?)+=\d+;)|((\w.?)+=\d+\Z))+/', $text, $this->fileParts);
     }
 }

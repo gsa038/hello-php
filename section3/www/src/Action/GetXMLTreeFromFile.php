@@ -44,7 +44,7 @@ class GetXMLTreeFromFile
 
     private function buildArrayFromPart(string $text) : Tree
     {
-        list($data, $levelsString) = explode(';', $text);
+        list($data, $levelsString) = explode('=', $text);
         $levels = explode('.', $levelsString);
         $tree = $this->buildTree(null, $levels, $data);
         return $tree;
@@ -70,8 +70,11 @@ class GetXMLTreeFromFile
         
     private function isValidFileForXML(string $filename) : bool
     {
-        $text = file_get_contents($filename);
-        return preg_match('/(((\w.?)+=\d+;)|((\w.?)+=\d+\Z))+/', $text, $this->fileParts);
+        // $text = file_get_contents($filename);
+        $text = 'a.b.c=1; a.b.d=2; a.c.e=3; a.c.f=4; b=5';
+        // return preg_match('/(((\w.?)+=\d+;)|((\w.?)+=\d+\Z))+/', $text, $this->fileParts);
+        $this->fileParts = explode(';', $text); 
+        return true;
     }
 }
 

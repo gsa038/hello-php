@@ -8,6 +8,7 @@ namespace App\Action;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Psr7\Response;
 
 class NotationsConverter
 {
@@ -25,14 +26,13 @@ class NotationsConverter
         $keys = array_keys($array);
         $array[$keys[0]] === 'Not found known notation!' ? $responseText = 'Not found known notation!' : $responseText = $this->GetNotationFromArray($array, $to);
         $response->getBody()->write($responseText);
-        $response->header()->set ('Content-Type', 'text/xml');
+        $response->withAddedHeader('Content-Type', 'text/xml');
         return $response;
     }
 
     private function GetArrayToConvert($filename) : array
     {
         $fileContent = file_get_contents($filename);
-        // $fileContent = "a.b.c=1; a.b.d=2; a.c.e=3; a.c.f=4; b=5";
         $result = [];
         if ($this->ChooseNotation($fileContent) === 'dots') {
             $parts = explode(';', $fileContent);
@@ -40,7 +40,7 @@ class NotationsConverter
                 list($levels, $value) = $this->GetDotsPartLevels($part);
                 $result = $this->updateBranch($result, $levels, $value);
             }
-        } else {
+        } else if ($this->ChooseNotation($fileContent) === 'false') {
             $result = ['Not found known notation!'];
         }
         return $result;
@@ -74,11 +74,13 @@ class NotationsConverter
         return $currentBranch;
     }
         
-    private function ChooseNotation(string $filename) : string
+    private function ChooseNotation(string $text) : string
     {
-        // $text = file_get_contents($filename);
-        // return preg_match('/(((\w.?)+=\d+;)|((\w.?)+=\d+\Z))+/', $text, $this->fileParts);
-        return 'dots';
+        preg_match('/((\w\.?)+=(\w*;|\w*$)\s*)+/', $text, $matchesDots);
+        if ($matchesDots[0] === $text) {
+            return 'dots';
+        }
+        return 'false';
     }
 
     private function GetNotationFromArray(array $toConvert, string $targetType) : string

@@ -24,7 +24,9 @@ class Factorial
         $responseData = ['statusCode' => $status, 'message' => $message, 'data' => $data];
         $payload = json_encode($responseData);
         $response->getBody()->write($payload);
-        return $response->withStatus($status);
+        return $response
+            ->withHeader("Content-Type", "application/json")
+            ->withStatus($status);
     }
     
     private function calcFactorial(int $number): int

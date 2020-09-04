@@ -9,12 +9,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "GSA\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Test\\": "tests/"
+            "GSA\\Test\\": "tests/"
         }
     },
     "config": {

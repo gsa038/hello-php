@@ -24,10 +24,10 @@ function getRussianPluralFormString(string $base, string $end1, string $end2, st
         $count = $count % 10;
     }
     if ($count === 1) {
-        return $base.$end1;
+        return $base . $end1;
     }
     if ($count > 1 && $count <=4) {
-        return $base.$end2;
+        return $base . $end2;
     }
-    return $base.$end3;
+    return $base . $end3;
 }

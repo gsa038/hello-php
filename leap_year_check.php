@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require 'utils.php';
+require_once 'utils.php';
 
 if ($argc > 2) {
     printError("1 additional aggument expected");
@@ -24,7 +24,7 @@ if (!$isValidYear) {
     exit();
 }
 
-$isLeapYear = getIsLeapYear((int)$year);
+$isLeapYear = getIsLeapYear((int) $year);
 $responceText = getIsLeapString($isLeapYear, $year);
 printInfo($responceText);
 

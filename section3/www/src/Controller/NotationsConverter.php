@@ -4,7 +4,7 @@
 //      get right regex for dots notation file content and use in ChooseNotation()
 //
 
-namespace App\Action;
+namespace GSA\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
